@@ -30,7 +30,7 @@ module.exports = {
   },
 
   //  *** Check Balance of Etherium ***
-  checkETHbalance: async function (req, res) {
+  checkETHbalance: async (req, res) =>{
     address = req.body.address;
     web3.eth.getBalance(address, async (err, result) => {
       if (err) {
@@ -56,7 +56,7 @@ module.exports = {
   },
 
   //   ***Transaction ETH from one account to another***
-  ETHtransaction: async function (req, res) {
+  ETHtransaction: async (req, res) => {
     const transaction_from = req.body.transaction_from;
     const transaction_to = req.body.transaction_to;
     const value = req.body.value;
@@ -88,7 +88,7 @@ module.exports = {
   },
 
   //   ***Transaction BNB from one account to another***
-  BNBtransaction: async function (req, res) {
+  BNBtransaction:async (req, res) => {
     const transaction_from = req.body.transaction_from;
     const transaction_to = req.body.transaction_to;
     const value = req.body.value;
@@ -120,7 +120,7 @@ module.exports = {
     eth_transaction();
   },
 // *** show address ***
-showAddress: async function (req, res) {
+showAddress: async (req, res) => {
   const addressData = req.query.addressData;
   var condition = addressData ? { addressData: { $regex: new RegExp(addressData), $options: "i" } } : {};
   Account.find(condition)
