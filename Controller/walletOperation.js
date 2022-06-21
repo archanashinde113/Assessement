@@ -156,26 +156,11 @@ showAddress: async (req, res) => {
     });
   },
 
-// *** profile detail ***
-profile: async (req, res) => {
-  const addressData = req.query.addressData;
-  var condition = addressData ? { addressData: { $regex: new RegExp(addressData), $options: "i" } } : {};
-  Account.find(condition)
-    .then(data => {
-      res.send(data);
-    })
-    .catch(err => {
-      res.status(500).send({
-        message:
-          err.message || "Some error occurred while retrieving account Detail."
-      });
-    });
-},
   // *** dashboard return address and balance and currency ***
   dashboard: async (req, res) => {
     let account = await Account.findOne()
     let address = account.addressData;
-    web3.utils.toChecksumAddress(address)
+   // web3.utils.toChecksumAddress(address)
     const ETH_Balance = await web3.eth.getBalance(address, async (err, result) => {
         if (err) {
           res.json(err);

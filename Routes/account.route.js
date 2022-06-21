@@ -35,11 +35,8 @@ router.get('/showAddress',walletOperation.showAddress);
 // show history of transaction
 router.get('/history',walletOperation.alltransction);
 
-// *** User profile API ***
-router.get('/profile',walletOperation.profile);
-
-// *** verify users detail by JSON Bearer Token ***
-router.get("/findAll", registerlogin.findAll);
+// *** User profile API with verify by Json Web Token  ***
+router.get('/Userprofile',registerlogin.Userprofile);
 
 //*** dashboard API return address and currency and balance ***
 router.get('/dashboard',walletOperation.dashboard);

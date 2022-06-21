@@ -29,7 +29,9 @@ let transporter = nodemailer.createTransport({
 module.exports = {
   // *** Register User Accont ***
   register : async (req, res) => {
-    const { email,  password, confirm, } = req.body;
+    const { email,  password, confirm, } = req.b
+    
+    ody;
 if ( !email || !password || !confirm) {
 res.send("Fill empty fields");
 }
@@ -115,11 +117,8 @@ User.findOne({ email: email }).then((user) => {
     }
     },
 
-    
-   
-
     // *** verify user by JSON Bearer Token ***
-    findAll : (auth,async (req,res) => {
+    Userprofile : (auth,async (req,res) => {
       const email = req.query.email;
       var condition =  email ? {  email: { $regex: new RegExp( email), $options: "i" } } : {};
       User.find(condition)
@@ -133,7 +132,6 @@ User.findOne({ email: email }).then((user) => {
           });
         });
     }),
-
 
     // *** Verify OTP ***
     verify: async  (req, res) =>{
