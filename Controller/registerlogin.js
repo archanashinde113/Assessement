@@ -29,15 +29,13 @@ let transporter = nodemailer.createTransport({
 module.exports = {
   // *** Register User Accont ***
   register : async (req, res) => {
-    const { email,  password, confirm, } = req.b
-    
-    ody;
+    const { email,  password, confirm, } = req.body;
 if ( !email || !password || !confirm) {
 res.send("Fill empty fields");
 }
 //Confirm passwords
 if (password !== confirm) {
-console.log("password must match");
+res.send("password must match");
 } else {
 //Validation
 User.findOne({ email: email }).then((user) => {
@@ -91,7 +89,8 @@ User.findOne({ email: email }).then((user) => {
       if (validPassword) {
         const payload = {
           _id:user._id,
-          email:user.email
+          email:user.email,
+          password:user.password
         };
         jwt.sign(
           payload,
