@@ -92,8 +92,7 @@ module.exports = {
     const transaction_from = req.body.transaction_from;
     const transaction_to = req.body.transaction_to;
     const value = req.body.value;
-    const transaction_hash = req.body.transaction_hash;
-
+  
     async function eth_transaction() {
       const value = web3.utils.toWei(req.body.value, 'ether')
       const SignedTransaction = await web3_bnb.eth.accounts.signTransaction({
@@ -137,16 +136,21 @@ showAddress: async function (req, res) {
 },
 
   // *** show transaction history ***
-  alltransction: async function (req, res) {
+  alltransction: async (req, res) =>{
     const address = req.body.address;
     const API_KEY = process.env.API_KEY;
     request(`https://api-ropsten.etherscan.io/api?module=account&action=txlist&address=${address}&startblock=0&endblock=99999999&page=1&offset=10&sort=asc&apikey=${API_KEY}`, function (error, response, body) {
-      console.error('error:', error);
+       console.error('error:', error);
       console.log('statusCode:', response && response.statusCode);
       console.log('body:', JSON.parse(body));
       res.status(200).json(JSON.parse(body))
       const alltransactionSave = new Account(
-        { alltransaction: JSON.parse(body) },
+        { 
+          transaction_from:response.from,
+          transaction_to:response.to,
+          value:response.value,
+          transaction_hash:response.hash
+         },
       );
       alltransactionSave.save();
     });
@@ -170,14 +174,15 @@ profile: async (req, res) => {
   // *** dashboard return address and balance and currency ***
   dashboard: async (req, res) => {
     let account = await Account.findOne()
-    let address = account.addressData
+    let address = account.addressData;
+    web3.utils.toChecksumAddress(address)
     const ETH_Balance = await web3.eth.getBalance(address, async (err, result) => {
         if (err) {
           res.json(err);
           return;
         }
         let balance = web3.utils.fromWei(result);
-        res.json(balance +  " BNB " );
+        res.json(balance +  " ETH " );
       });
     
     const BNB_Balance = await web3.eth.getBalance(address, async (err, result) => {
@@ -196,7 +201,7 @@ profile: async (req, res) => {
         {
           Address:address,
           currency: "BNB",
-          Balance: BNB_Balance
+          Balance: BNB_Balance,
         } 
     )
     res.status(200).send(dashboard_data);

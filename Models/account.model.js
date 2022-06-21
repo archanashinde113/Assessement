@@ -10,7 +10,6 @@ let accountSchema = new Schema({
   transaction_hash:{type:String},
   addressData:{type:String},
   private_Key:{type:String},
-  alltransaction:{type:String},
 },
 {timestamps:true});
 
